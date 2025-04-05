@@ -20,7 +20,6 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	samplev1alpha1 "github.com/crossplane/provider-azurecontainerregistryext/apis/sample/v1alpha1"
 	azurecontainerregistryextv1alpha1 "github.com/crossplane/provider-azurecontainerregistryext/apis/v1alpha1"
 )
 
@@ -28,7 +27,6 @@ func init() {
 	// Register the types with the Scheme so the components can map objects to GroupVersionKinds and back
 	AddToSchemes = append(AddToSchemes,
 		azurecontainerregistryextv1alpha1.SchemeBuilder.AddToScheme,
-		samplev1alpha1.SchemeBuilder.AddToScheme,
 	)
 }
 
