@@ -108,13 +108,12 @@ dev-clean: $(KIND) $(KUBECTL)
 # Special Targets
 
 # Install gomplate
-GOMPLATE_VERSION := 3.10.0
-GOMPLATE := $(TOOLS_HOST_DIR)/gomplate-$(GOMPLATE_VERSION)
+GOMPLATE_VERSION := 3.11.7
+GOMPLATE := $(PWD)/gomplate-$(GOMPLATE_VERSION)
 
 $(GOMPLATE):
 	@$(INFO) installing gomplate $(SAFEHOSTPLATFORM)
-	@mkdir -p $(TOOLS_HOST_DIR)
-	@curl -fsSLo $(GOMPLATE) https://github.com/hairyhenderson/gomplate/releases/download/v$(GOMPLATE_VERSION)/gomplate_$(SAFEHOSTPLATFORM) || $(FAIL)
+	@curl -fsSLo $(GOMPLATE) https://github.com/hairyhenderson/gomplate/releases/download/v$(GOMPLATE_VERSION)/gomplate_darwin-amd64 || $(FAIL)
 	@chmod +x $(GOMPLATE)
 	@$(OK) installing gomplate $(SAFEHOSTPLATFORM)
 
