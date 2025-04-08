@@ -18,6 +18,7 @@ package cacherule
 
 import (
 	"context"
+	"github.com/qbeast-io/provider-acr-cache/internal/controller/pulumiservice"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -37,7 +38,7 @@ import (
 
 func TestObserve(t *testing.T) {
 	type fields struct {
-		service interface{}
+		service pulumiservice.Service
 	}
 
 	type args struct {
