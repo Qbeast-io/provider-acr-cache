@@ -1,4 +1,4 @@
-module github.com/crossplane/provider-azurecontainerregistryext
+module github.com/qbeast-io/provider-acr-cache
 
 go 1.22.0
 

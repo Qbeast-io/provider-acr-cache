@@ -30,10 +30,10 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/crossplane/provider-azurecontainerregistryext/apis/containerregistry/v1alpha1"
-	apisv1alpha1 "github.com/crossplane/provider-azurecontainerregistryext/apis/v1alpha1"
-	"github.com/crossplane/provider-azurecontainerregistryext/internal/controller/pulumiservice"
-	"github.com/crossplane/provider-azurecontainerregistryext/internal/features"
+	"github.com/qbeast-io/provider-acr-cache/apis/containerregistry/v1alpha1"
+	apisv1alpha1 "github.com/qbeast-io/provider-acr-cache/apis/v1alpha1"
+	"github.com/qbeast-io/provider-acr-cache/internal/controller/pulumiservice"
+	"github.com/qbeast-io/provider-acr-cache/internal/features"
 )
 
 const (

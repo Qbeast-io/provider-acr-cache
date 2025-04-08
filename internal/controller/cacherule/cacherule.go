@@ -19,7 +19,7 @@ package cacherule
 import (
 	"context"
 	"fmt"
-	"github.com/crossplane/provider-azurecontainerregistryext/internal/controller/pulumiservice"
+	"github.com/qbeast-io/provider-acr-cache/internal/controller/pulumiservice"
 
 	"github.com/pkg/errors"
 	"k8s.io/apimachinery/pkg/types"
@@ -33,9 +33,9 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/reconciler/managed"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 
-	"github.com/crossplane/provider-azurecontainerregistryext/apis/containerregistry/v1alpha1"
-	apisv1alpha1 "github.com/crossplane/provider-azurecontainerregistryext/apis/v1alpha1"
-	"github.com/crossplane/provider-azurecontainerregistryext/internal/features"
+	"github.com/qbeast-io/provider-acr-cache/apis/containerregistry/v1alpha1"
+	apisv1alpha1 "github.com/qbeast-io/provider-acr-cache/apis/v1alpha1"
+	"github.com/qbeast-io/provider-acr-cache/internal/features"
 )
 
 const (

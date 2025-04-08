@@ -1,7 +1,7 @@
 # ====================================================================================
 # Setup Project
-PROJECT_NAME := provider-azurecontainerregistryext
-PROJECT_REPO := github.com/crossplane/$(PROJECT_NAME)
+PROJECT_NAME := provider-acr-cache
+PROJECT_REPO := github.com/qbeast-io/$(PROJECT_NAME)
 
 PLATFORMS ?= linux_amd64 linux_arm64
 -include build/makelib/common.mk
@@ -30,7 +30,7 @@ GO111MODULE = on
 # ====================================================================================
 # Setup Images
 
-IMAGES = provider-azurecontainerregistryext
+IMAGES = provider-acr-cache
 -include build/makelib/imagelight.mk
 
 # ====================================================================================
@@ -40,12 +40,12 @@ XPKG_REG_ORGS ?= xpkg.upbound.io/crossplane
 # NOTE(hasheddan): skip promoting on xpkg.upbound.io as channel tags are
 # inferred.
 XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/crossplane
-XPKGS = provider-azurecontainerregistryext
+XPKGS = provider-acr-cache
 -include build/makelib/xpkg.mk
 
 # NOTE(hasheddan): we force image building to happen prior to xpkg build so that
 # we ensure image is present in daemon.
-xpkg.build.provider-azurecontainerregistryext: do.build.images
+xpkg.build.provider-acr-cache: do.build.images
 
 fallthrough: submodules
 	@echo Initial setup complete. Running make again . . .
@@ -119,8 +119,6 @@ $(GOMPLATE):
 
 export GOMPLATE
 
-# This target prepares repo for your provider by replacing all "azurecontainerregistryext"
-# occurrences with your provider name.
 # This target can only be run once, if you want to rerun for some reason,
 # consider stashing/resetting your git state.
 # Arguments:

@@ -1,10 +1,9 @@
 apiVersion: meta.pkg.crossplane.io/v1alpha1
 kind: Provider
 metadata:
-  name: provider-azurecontainerregistryext
+  name: provider-acr-cache
   annotations:
-    meta.crossplane.io/maintainer: Crossplane Maintainers <info@crossplane.io>
-    meta.crossplane.io/source: github.com/crossplane/provider-azurecontainerregistryext
+    meta.crossplane.io/maintainer: Aaron Spiegel <spiegela@gmail.com>
+    meta.crossplane.io/source: github.com/Qbeast-io/provider-acr-cache
     meta.crossplane.io/license: Apache-2.0
-    meta.crossplane.io/description: |
-      A azurecontainerregistryext that can be used to create Crossplane providers.
+    meta.crossplane.io/description: "Provider for managing ACR cache built using the Go template and related Pulumi providers"

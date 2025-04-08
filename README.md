@@ -1,38 +1,78 @@
-# provider-azurecontainerregistryext
 
-`provider-azurecontainerregistryext` is a minimal [Crossplane](https://crossplane.io/) Provider
-that is meant to be used as a azurecontainerregistryext for implementing new Providers. It comes
-with the following features that are meant to be refactored:
+# Provider Azure ACR Cache
 
-- A `ProviderConfig` type that only points to a credentials `Secret`.
-- A `MyType` resource type that serves as an example managed resource.
-- A managed resource controller that reconciles `MyType` objects and simply
-  prints their configuration in its `Observe` method.
+<div style="text-align: center;">
+
+![CI](https://github.com/Qbeast-io/provider-acr-cache/workflows/CI/badge.svg)
+[![GitHub release](https://img.shields.io/github/release/Qbeast-io/provider-acr-cache/all.svg)](https://github.com/Qbeast-io/provider-acr-cache/releases)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Qbeast-io/provider-acr-cache)](https://goreportcard.com/report/github.com/Qbeast-io/provider-acr-cache)
+[![Contributors](https://img.shields.io/github/contributors/Qbeast-io/provider-acr-cache)](https://github.com/Qbeast-io/provider-acr-cache/graphs/contributors)
+
+
+</div>
+
+`provider-acr-cache` is a [Crossplane](https://crossplane.io/) provider for managing ACR cache built using the Go template and related Pulumi providers.
+
+Warning:
+`This provider is not ready to be used for production and might be missing resources`
+
+Most of the testing have been done on [Azure Databricks](https://azure.microsoft.com/en-ca/products/acr-cache)
+
+## Getting Started
+
+Install the provider by using the following command after changing the image tag
+to the [latest release](https://marketplace.upbound.io/providers/spiegela/provider-acr-cache):
+```
+up ctp provider install spiegela/provider-acr-cache:v0.1.0
+```
+
+Alternatively, you can use declarative installation:
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-acr-cache
+spec:
+  package: Qbeast-io/provider-acr-cache:v0.1.0
+EOF
+```
+
+Notice that in this example Provider resource is referencing ControllerConfig with debug enabled.
+
+You can see the API reference [here](https://doc.crds.dev/github.com/Qbeast-io/provider-acr-cache).
+
+## Exemples
+
+A few examples are provided [here](./examples/) to show case how to configure the provider, and how to use some resources
+
 
 ## Developing
 
-1. Use this repository as a azurecontainerregistryext to create a new one.
-1. Run `make submodules` to initialize the "build" Make submodule we use for CI/CD.
-1. Rename the provider by running the following command:
-```shell
-  export provider_name=MyProvider # Camel case, e.g. GitHub
-  make provider.prepare provider=${provider_name}
+Run code-generation pipeline:
+```console
+make generate
 ```
-4. Add your new type by running the following command:
-```shell
-  export group=sample # lower case e.g. core, cache, database, storage, etc.
-  export type=MyType # Camel casee.g. Bucket, Database, CacheCluster, etc.
-  make provider.addtype provider=${provider_name} group=${group} kind=${type}
+
+Run against a Kubernetes cluster:
+
+```console
+make run
 ```
-5. Replace the *sample* group with your new group in apis/{provider}.go
-5. Replace the *mytype* type with your new type in internal/controller/{provider}.go
-5. Replace the default controller and ProviderConfig implementations with your own
-5. Run `make reviewable` to run code generation, linters, and tests.
-5. Run `make build` to build the provider.
 
-Refer to Crossplane's [CONTRIBUTING.md] file for more information on how the
-Crossplane community prefers to work. The [Provider Development][provider-dev]
-guide may also be of use.
+Build, push, and install:
 
-[CONTRIBUTING.md]: https://github.com/crossplane/crossplane/blob/master/CONTRIBUTING.md
-[provider-dev]: https://github.com/crossplane/crossplane/blob/master/contributing/guide-provider-development.md
+```console
+make all
+```
+
+Build binary:
+
+```console
+make build
+```
+
+## Report a Bug
+
+For filing bugs, suggesting improvements, or requesting new features, please
+open an [issue](https://github.com/Qbeast-io/provider-acr-cache/issues).

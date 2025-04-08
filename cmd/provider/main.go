@@ -37,10 +37,10 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/ratelimiter"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 
-	"github.com/crossplane/provider-azurecontainerregistryext/apis"
-	"github.com/crossplane/provider-azurecontainerregistryext/apis/v1alpha1"
-	azurecontainerregistryext "github.com/crossplane/provider-azurecontainerregistryext/internal/controller"
-	"github.com/crossplane/provider-azurecontainerregistryext/internal/features"
+	"github.com/qbeast-io/provider-acr-cache/apis"
+	"github.com/qbeast-io/provider-acr-cache/apis/v1alpha1"
+	acrcache "github.com/qbeast-io/provider-acr-cache/internal/controller"
+	"github.com/qbeast-io/provider-acr-cache/internal/features"
 )
 
 func main() {
@@ -60,7 +60,7 @@ func main() {
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
 	zl := zap.New(zap.UseDevMode(*debug))
-	log := logging.NewLogrLogger(zl.WithName("provider-azurecontainerregistryext"))
+	log := logging.NewLogrLogger(zl.WithName("provider-acr-cache"))
 	if *debug {
 		// The controller-runtime runs with a no-op logger by default. It is
 		// *very* verbose even at info level, so we only provide it a real
@@ -86,7 +86,7 @@ func main() {
 		// server. Switching to Leases only and longer leases appears to
 		// alleviate this.
 		LeaderElection:             *leaderElection,
-		LeaderElectionID:           "crossplane-leader-election-provider-azurecontainerregistryext",
+		LeaderElectionID:           "crossplane-leader-election-provider-acr-cache",
 		LeaderElectionResourceLock: resourcelock.LeasesResourceLock,
 		LeaseDuration:              func() *time.Duration { d := 60 * time.Second; return &d }(),
 		RenewDeadline:              func() *time.Duration { d := 50 * time.Second; return &d }(),
@@ -126,6 +126,6 @@ func main() {
 		log.Info("Alpha feature enabled", "flag", features.EnableAlphaManagementPolicies)
 	}
 
-	kingpin.FatalIfError(azurecontainerregistryext.Setup(mgr, o), "Cannot setup AzureContainerRegistryExt controllers")
+	kingpin.FatalIfError(acrcache.Setup(mgr, o), "Cannot setup AzureContainerRegistryExt controllers")
 	kingpin.FatalIfError(mgr.Start(ctrl.SetupSignalHandler()), "Cannot start controller manager")
 }

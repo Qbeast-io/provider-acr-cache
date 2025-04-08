@@ -25,7 +25,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: A ProviderConfig configures a AzureContainerRegistryExt provider.
+        description: A ProviderConfig configures a Azure ACR Cache provider.
         properties:
           apiVersion:
             description: |-

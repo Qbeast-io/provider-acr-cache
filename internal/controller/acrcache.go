@@ -20,8 +20,8 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/controller"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	"github.com/crossplane/provider-azurecontainerregistryext/internal/controller/config"
-	"github.com/crossplane/provider-azurecontainerregistryext/internal/controller/credentialset"
+	"github.com/qbeast-io/provider-acr-cache/internal/controller/config"
+	"github.com/qbeast-io/provider-acr-cache/internal/controller/credentialset"
 )
 
 // Setup creates all AzureContainerRegistryExt controllers with the supplied logger and adds them to
