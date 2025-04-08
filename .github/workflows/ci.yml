@@ -24,7 +24,7 @@ jobs:
     outputs:
       noop: ${{ steps.noop.outputs.should_skip }}
     steps:
-      - name: Detect No-op Changes
+      - name: Detect Changes
         id: noop
         uses: fkirc/skip-duplicate-actions@v5.2.0
         with:
