@@ -27,12 +27,72 @@ import (
 
 // CredentialSetParameters are the configurable fields of a CredentialSet.
 type CredentialSetParameters struct {
-	ConfigurableField string `json:"configurableField"`
+	Name              string           `json:"name"`
+	RegistryName      string           `json:"registryName"`
+	Identity          Identity         `json:"identity"`
+	AuthCredentials   []AuthCredential `json:"authCredentials"`
+	ResourceGroupName string           `json:"resourceGroupName"`
+	// +kubebuilder:validation:Optional
+	LoginServer string `json:"loginServer"`
+}
+
+type Identity struct {
+	Type                   string                          `json:"type"`
+	PrincipalId            string                          `json:"principalId"`
+	TenantId               string                          `json:"tenantId"`
+	UserAssignedIdentities map[string]UserAssignedIdentity `json:"userAssignedIdentities"`
+}
+
+type UserAssignedIdentity struct {
+	ClientId    string `json:"client_id"`
+	PrincipalId string `json:"principal_id"`
+}
+
+type AuthCredential struct {
+	Name                     string `json:"name"`
+	UsernameSecretIdentifier string `json:"usernameSecretIdentifier"`
+	PasswordSecretIdentifier string `json:"passwordSecretIdentifier"`
 }
 
 // CredentialSetObservation are the observable fields of a CredentialSet.
 type CredentialSetObservation struct {
-	ObservableField string `json:"observableField,omitempty"`
+	// The Azure API version of the resource.
+	AzureApiVersion string `json:"azureApiVersion,omitempty"`
+	// The creation date of credential store resource.
+	CreationDate string `json:"creationDate,omitempty"`
+	// The provider-assigned unique ID for this managed resource.
+	Id string `json:"id,omitempty"`
+	// The name of the resource.
+	Name string `json:"name,omitempty"`
+	// Provisioning state of the resource.
+	ProvisioningState string `json:"provisioningState,omitempty"`
+	// The type of the resource.
+	Type                string `json:"type,omitempty"`
+	IdentityType        string `json:"identityType,omitempty"`
+	IdentityTenantId    string `json:"identityTenantId,omitempty"`
+	IdentityPrincipalId string `json:"identityPrincipalId,omitempty"`
+	Ready               bool   `json:"ready,omitempty"`
+	CreatedByType       string `json:"createdByType,omitempty"`
+	CreatedAt           string `json:"createdAt,omitempty"`
+	CreatedBy           string `json:"createdBy,omitempty"`
+	LastModifiedByType  string `json:"lastModifiedByType,omitempty"`
+	LastModifiedAt      string `json:"lastModifiedAt,omitempty"`
+	LastModifiedBy      string `json:"lastModifiedBy,omitempty"`
+}
+
+type SystemDataResponse struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt string
+	// The identity that created the resource.
+	CreatedBy string
+	// The type of identity that created the resource.
+	CreatedByType string
+	// The timestamp of resource modification (UTC).
+	LastModifiedAt string
+	// The identity that last modified the resource.
+	LastModifiedBy string
+	// The type of identity that last modified the resource.
+	LastModifiedByType string
 }
 
 // A CredentialSetSpec defines the desired state of a CredentialSet.
