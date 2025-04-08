@@ -4,6 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
+	"strings"
+
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-azure-native-sdk/containerregistry/v2"
 	"github.com/pulumi/pulumi/sdk/v3/go/auto"
@@ -11,8 +14,6 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/qbeast-io/provider-acr-cache/apis/containerregistry/v1alpha1"
 	"github.com/qbeast-io/provider-acr-cache/internal/controller/config"
-	"os"
-	"strings"
 )
 
 type Service struct {
@@ -144,8 +145,7 @@ func (s *Service) ObserveCredentialSet(ctx context.Context, spec *v1alpha1.Crede
 				exists = false
 				return nil
 			}
-			err = errors.Wrap(err, "failed to lookup credential set")
-			return nil
+			return errors.Wrap(err, "failed to lookup credential set")
 		}
 		obs = &v1alpha1.CredentialSetObservation{
 			Id:                  cred.Id,
@@ -164,7 +164,6 @@ func (s *Service) ObserveCredentialSet(ctx context.Context, spec *v1alpha1.Crede
 			LastModifiedAt:      *cred.SystemData.LastModifiedAt,
 			LastModifiedBy:      *cred.SystemData.LastModifiedBy,
 		}
-		cred.ProvisioningState = cred.ProvisioningState
 		upToDate = credentialSetIsUpToDate(&spec.ForProvider, cred)
 		return nil
 	})
@@ -306,8 +305,7 @@ func (s *Service) ObserveCacheRule(ctx context.Context, spec *v1alpha1.CacheRule
 				exists = false
 				return nil
 			}
-			err = errors.Wrap(err, "failed to lookup credential set")
-			return nil
+			return errors.Wrap(err, "failed to lookup credential set")
 		}
 		obs = &v1alpha1.CacheRuleObservation{
 			CreationDate:       cred.CreationDate,
@@ -373,36 +371,50 @@ func (s *Service) DeleteCacheRule(ctx context.Context, spec *v1alpha1.CacheRuleS
 	return nil
 }
 
-func credentialSetIsUpToDate(c *v1alpha1.CredentialSetParameters, cred *containerregistry.LookupCredentialSetResult) bool {
-	// Compare the spec with the observed state
-	if c.Name != cred.Name {
+func credentialSetIsUpToDate(desired *v1alpha1.CredentialSetParameters, configured *containerregistry.LookupCredentialSetResult) bool {
+	if desired.Name != configured.Name {
 		return false
 	}
-	if c.LoginServer != *cred.LoginServer {
+	if desired.LoginServer != *configured.LoginServer {
 		return false
 	}
-	if c.Identity.Type != *cred.Identity.Type {
+	if desired.Identity.Type != *configured.Identity.Type {
 		return false
 	}
-	if c.Identity.PrincipalId != *cred.Identity.PrincipalId {
+	if desired.Identity.PrincipalId != *configured.Identity.PrincipalId {
 		return false
 	}
-	if c.Identity.TenantId != *cred.Identity.TenantId {
+	if desired.Identity.TenantId != *configured.Identity.TenantId {
 		return false
 	}
-	for k, v := range c.Identity.UserAssignedIdentities {
-		if *cred.Identity.UserAssignedIdentities[k].ClientId != v.ClientId || *cred.Identity.UserAssignedIdentities[k].PrincipalId != v.PrincipalId {
+	for k, v := range desired.Identity.UserAssignedIdentities {
+		if *configured.Identity.UserAssignedIdentities[k].ClientId != v.ClientId {
+			return false
+		}
+		if *configured.Identity.UserAssignedIdentities[k].PrincipalId != v.PrincipalId {
 			return false
 		}
 	}
-	for _, credential := range c.AuthCredentials {
-		for _, cred := range cred.AuthCredentials {
-			if credential.Name == *cred.Name {
-				if credential.UsernameSecretIdentifier != *cred.UsernameSecretIdentifier || credential.PasswordSecretIdentifier != *cred.PasswordSecretIdentifier {
-					return false
-				}
-			}
+	if len(configured.AuthCredentials) != len(desired.AuthCredentials) {
+		return false
+	}
+	for idx, desiredCred := range desired.AuthCredentials {
+		if !authCredentialsUpToDate(&desiredCred, &configured.AuthCredentials[idx]) {
+			return false
 		}
+	}
+	return true
+}
+
+func authCredentialsUpToDate(desired *v1alpha1.AuthCredential, configured *containerregistry.AuthCredentialResponse) bool {
+	if *configured.Name != desired.Name {
+		return false
+	}
+	if *configured.UsernameSecretIdentifier != desired.UsernameSecretIdentifier {
+		return false
+	}
+	if *configured.PasswordSecretIdentifier != desired.PasswordSecretIdentifier {
+		return false
 	}
 	return true
 }

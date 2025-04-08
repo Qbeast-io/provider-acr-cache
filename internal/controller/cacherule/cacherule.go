@@ -19,12 +19,6 @@ package cacherule
 import (
 	"context"
 	"fmt"
-	"github.com/qbeast-io/provider-acr-cache/internal/controller/pulumiservice"
-
-	"github.com/pkg/errors"
-	"k8s.io/apimachinery/pkg/types"
-	ctrl "sigs.k8s.io/controller-runtime"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/crossplane/crossplane-runtime/pkg/connection"
 	"github.com/crossplane/crossplane-runtime/pkg/controller"
@@ -32,10 +26,14 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/ratelimiter"
 	"github.com/crossplane/crossplane-runtime/pkg/reconciler/managed"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
-
+	"github.com/pkg/errors"
 	"github.com/qbeast-io/provider-acr-cache/apis/containerregistry/v1alpha1"
 	apisv1alpha1 "github.com/qbeast-io/provider-acr-cache/apis/v1alpha1"
+	"github.com/qbeast-io/provider-acr-cache/internal/controller/pulumiservice"
 	"github.com/qbeast-io/provider-acr-cache/internal/features"
+	"k8s.io/apimachinery/pkg/types"
+	ctrl "sigs.k8s.io/controller-runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (

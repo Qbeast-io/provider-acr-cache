@@ -18,14 +18,13 @@ package cacherule
 
 import (
 	"context"
-	"github.com/qbeast-io/provider-acr-cache/internal/controller/pulumiservice"
 	"testing"
-
-	"github.com/google/go-cmp/cmp"
 
 	"github.com/crossplane/crossplane-runtime/pkg/reconciler/managed"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/crossplane/crossplane-runtime/pkg/test"
+	"github.com/google/go-cmp/cmp"
+	"github.com/qbeast-io/provider-acr-cache/internal/controller/pulumiservice"
 )
 
 // Unlike many Kubernetes projects Crossplane does not use third party testing
